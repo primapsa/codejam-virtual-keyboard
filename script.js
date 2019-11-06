@@ -28,3 +28,8 @@ function changeLang(){
             currentLang[i].children[1].classList.add(firstChildLang);       
     }
 }
+function keyLightOn (active) {    
+    
+    active.closest('.key').classList.add('clicked');
+    
+}
