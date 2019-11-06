@@ -39,3 +39,16 @@ function keyLightOff (active) {
     active.closest('.key').classList.remove('clicked');
     
 }
+
+function capsLetters(active){  
+        
+    let bigLetter = keyboard.querySelectorAll('.show');
+    for (let i = 0; i < bigLetter.length; i++) {      
+        let firstChildLetter = bigLetter[i].children[0].classList[2]
+        let secondChildLetter = bigLetter[i].children[1].classList[2]
+        bigLetter[i].children[0].classList.add(secondChildLetter);
+        bigLetter[i].children[0].classList.remove(firstChildLetter);
+        bigLetter[i].children[1].classList.add(firstChildLetter);
+        bigLetter[i].children[1].classList.remove(secondChildLetter);
+    }
+}
