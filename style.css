@@ -1,0 +1,67 @@
+.wrapper {
+    width: 800px;
+    margin: 0 auto;  
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;    
+}
+
+.area {
+    display: block;
+    width: 700px;
+    height: 100px;   
+    font-size: 18px;
+    outline: none;
+    overflow: auto;
+    color: #444;
+}
+
+.keyboard {
+    width: 700px;
+    margin-top: 10px;
+}
+
+.line {   
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+.key {    
+    min-width: 40px;
+    height: 40px;  
+    box-sizing: border-box;  
+    background: #000000;
+    color: #ffffff;
+    line-height: 40px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 3px;    
+}
+
+.key:hover {
+    background: #383838;
+}
+
+.disabled {
+    display: none;
+}
+
+.clicked {
+   opacity: 0.8;
+   font-size: 17px;
+   font-weight: bold; 
+}
+
+.key-Backspace,
+.key-CapsLock,
+.key-Enter,
+.key-ShiftLeft,
+.key-ShiftRight {
+    width: 100px;
+}
+
+.key-Space {
+    width: 280px;
+}
