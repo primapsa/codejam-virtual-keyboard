@@ -465,4 +465,4 @@ const config = [
     ]
     
 ];
-const controls = ['Tab','CapsLock','ShiftLeft','ShiftRight','ControlLeft','MetaLeft','AltLeft','Space','AltRight','ControlRight','Backspace','Enter','Del'];
+const controls = ['Tab','CapsLock','ShiftLeft','ShiftRight','ControlLeft','MetaLeft','AltLeft','Space','AltRight','ControlRight','Backspace','Enter','Delete'];

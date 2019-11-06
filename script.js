@@ -1,9 +1,14 @@
+let altPressed = false;
+let capsLockEnabled = false;
+let shiftPressed = false;
+
 document.body.insertAdjacentHTML("afterbegin",'<div class="wrapper" id="wrapper"><textarea  class="area" id="result" rows="5" cols="30"></textarea><div class="keyboard" id="keyboard"></div>');
      for (let i = 0; i < config.length; i++){
       let divLine = document.createElement('div');
       divLine.classList.add('line');
       for(let j = 0; j < config[i].length; j++){
-        let divKey = document.createElement('div');      
+        let divKey = document.createElement('div');
+       // divKey.classList.add(`${config[i][j].key}`);
         divKey.classList.add('key');   
         divKey.classList.add(`key-${config[i][j]['key']}`);    
         divKey.insertAdjacentHTML('afterbegin',`<div class="${config[i][j].key} show">
@@ -28,29 +33,32 @@ function changeLang(){
             currentLang[i].children[1].classList.add(firstChildLang);       
     }
 }
+
 function keyLightOn (active) {    
     
     active.closest('.key').classList.add('clicked');
     
 }
-
 function keyLightOff (active) {    
     
     active.closest('.key').classList.remove('clicked');
     
 }
 
-function capsLetters(active){  
-
+function capsLetters(active){
+   
     if(capsLockEnabled) {
         keyLightOff (active);
         capsLockEnabled = false;
     }else {
         keyLightOn(active);
         capsLockEnabled = true;
-    }        
+    }
+    
+        
     let bigLetter = keyboard.querySelectorAll('.show');
-    for (let i = 0; i < bigLetter.length; i++) {      
+    for (let i = 0; i < bigLetter.length; i++) {
+       // let children = bigLetter[i].children.querySelector('.upper');
         let firstChildLetter = bigLetter[i].children[0].classList[2]
         let secondChildLetter = bigLetter[i].children[1].classList[2]
         bigLetter[i].children[0].classList.add(secondChildLetter);
@@ -59,9 +67,7 @@ function capsLetters(active){
         bigLetter[i].children[1].classList.remove(secondChildLetter);
     }
 }
-
 function shiftLetters(){
-
     if(shiftPressed) {
         shiftPressed = false;
     }else {
@@ -69,7 +75,8 @@ function shiftLetters(){
     }
 
     let bigLetter = keyboard.querySelectorAll('.show');
-    for (let i = 0; i < bigLetter.length; i++) {     
+    for (let i = 0; i < bigLetter.length; i++) {
+       // let children = bigLetter[i].children.querySelector('.upper');
         let firstChildLetter = bigLetter[i].children[0].classList[2]
         let secondChildLetter = bigLetter[i].children[1].classList[2]
         bigLetter[i].children[0].classList.add(secondChildLetter);
@@ -88,30 +95,34 @@ function printLetter(active, code) {
   
     let printActive = active.querySelector('.active').innerText;
     if(controls.indexOf(code) !== -1){
-        switch(code){
-            case 'Tab':
-                result.value += '  ';                    
-                break;
-            case ('Backspace'):
-                result.value = result.value.substr(0, result.value.length - 1);
-                break;
-            case ('Enter'):
-                result.value += '\n';         
-        }
-    }else{
-    result.value += printActive;
+    switch(code){
+        case 'Tab':
+            result.value += '  ';                    
+            break;
+        case ('Backspace'):
+            result.value = result.value.substr(0, result.value.length - 1);
+            break;
+        case ('Enter'):
+            result.value += '\n';         
     }
+}else{
+
+result.value += printActive;
+}
    
 }
 
-function pressedUp(event){
+function pressedUp (event){
     let eventCode = event.code;
-    let active = keyboard.querySelector(`.${eventCode}.show`);     
+    let active = keyboard.querySelector(`.${eventCode}.show`); 
+    
 
     if(eventCode !== 'CapsLock') {
 
         keyLightOn(active);
-    }   
+    }
+    
+   
     if(eventCode === 'AltLeft'){
         altPressed = true;
     }
@@ -123,15 +134,22 @@ function pressedUp(event){
     }
     if((eventCode === 'ShiftLeft' || eventCode === 'ShiftRight') && shiftPressed === false){
         shiftLetters();
-    }   
+    }
+   
      printLetter(active, eventCode);
+   
+    
+
+
 }
 
 function pressedDown(event){
-
     let eventCode = event.code;
-    let active = keyboard.querySelector(`.${eventCode}`);   
-    if(eventCode !== 'CapsLock'){
+    let active = keyboard.querySelector(`.${eventCode}`);
+    
+    
+   
+   if(eventCode !== 'CapsLock'){
     keyLightOff(active);
     }
     if(eventCode === 'AltLeft'){
@@ -140,17 +158,26 @@ function pressedDown(event){
     if(eventCode === 'ShiftLeft' || eventCode === 'ShiftRight' ){
         shiftLetters();
     }
-}
 
+}
 function mouseClickUp(event) {   
-    let target = event.target.closest('div') ;
-    keyLightOff(target);
-    printLetter(target, target.classList[0]);  
+     let target = event.target.closest('div') ;
+     keyLightOff(target);
+//console.log(target.closest('div'));
+    // if(target.classList[2] == 'active'){
+    //     //console.log();
+      
+    //    //console
+    // }
+   // console.log('target__'+target.closest('div')+'  class__'+target.classList[0]);
+    printLetter(target, target.classList[0]);
+ 
+   
 }
 
 function mouseClickDown(event) {   
-   let target = event.target.closest('div') ;
-   keyLightOn(target);
+    let target = event.target.closest('div') ;
+    keyLightOn(target);
 }
 
 document.addEventListener('keydown', pressedUp);
@@ -160,4 +187,3 @@ for(let i = 0; i < keyListener.length; i++){
     keyListener[i].addEventListener('mouseup', mouseClickUp);
     keyListener[i].addEventListener('mousedown', mouseClickDown);
 }
-
