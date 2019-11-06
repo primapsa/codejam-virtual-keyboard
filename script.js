@@ -128,7 +128,7 @@ function pressedUp(event){
 }
 
 function pressedDown(event){
-    
+
     let eventCode = event.code;
     let active = keyboard.querySelector(`.${eventCode}`);   
     if(eventCode !== 'CapsLock'){
@@ -140,5 +140,24 @@ function pressedDown(event){
     if(eventCode === 'ShiftLeft' || eventCode === 'ShiftRight' ){
         shiftLetters();
     }
+}
+
+function mouseClickUp(event) {   
+    let target = event.target.closest('div') ;
+    keyLightOff(target);
+    printLetter(target, target.classList[0]);  
+}
+
+function mouseClickDown(event) {   
+   let target = event.target.closest('div') ;
+   keyLightOn(target);
+}
+
+document.addEventListener('keydown', pressedUp);
+document.addEventListener('keyup', pressedDown);
+let keyListener = keyboard.querySelectorAll('.key');
+for(let i = 0; i < keyListener.length; i++){
+    keyListener[i].addEventListener('mouseup', mouseClickUp);
+    keyListener[i].addEventListener('mousedown', mouseClickDown);
 }
 
