@@ -49,9 +49,9 @@
 }
 
 .clicked {
-   opacity: 0.8;
-   font-size: 17px;
+   opacity: 0.8;   
    font-weight: bold; 
+   transition: opacity .1s, font-weight .3s;
 }
 
 .key-Backspace,
@@ -65,3 +65,9 @@
 .key-Space {
     width: 280px;
 }
+
+.en, .ru {
+    user-select: none;
+}
+
+
