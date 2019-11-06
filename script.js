@@ -16,3 +16,15 @@ document.body.insertAdjacentHTML("afterbegin",'<div class="wrapper" id="wrapper"
       keyboard.append(divLine);   
   }
 wrapper.append(keyboard);
+
+function changeLang(){
+    let currentLang =  keyboard.querySelectorAll('.key');       
+    for (let i = 0; i < currentLang.length; i++){       
+            let firstChildLang = currentLang[i].children[0].classList[1];
+            let secondChildLanf = currentLang[i].children[1].classList[1];
+            currentLang[i].children[0].classList.remove(firstChildLang);
+            currentLang[i].children[0].classList.add(secondChildLanf);
+            currentLang[i].children[1].classList.remove(secondChildLanf);
+            currentLang[i].children[1].classList.add(firstChildLang);       
+    }
+}
