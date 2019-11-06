@@ -41,9 +41,35 @@ function keyLightOff (active) {
 }
 
 function capsLetters(active){  
-        
+
+    if(capsLockEnabled) {
+        keyLightOff (active);
+        capsLockEnabled = false;
+    }else {
+        keyLightOn(active);
+        capsLockEnabled = true;
+    }        
     let bigLetter = keyboard.querySelectorAll('.show');
     for (let i = 0; i < bigLetter.length; i++) {      
+        let firstChildLetter = bigLetter[i].children[0].classList[2]
+        let secondChildLetter = bigLetter[i].children[1].classList[2]
+        bigLetter[i].children[0].classList.add(secondChildLetter);
+        bigLetter[i].children[0].classList.remove(firstChildLetter);
+        bigLetter[i].children[1].classList.add(firstChildLetter);
+        bigLetter[i].children[1].classList.remove(secondChildLetter);
+    }
+}
+
+function shiftLetters(){
+
+    if(shiftPressed) {
+        shiftPressed = false;
+    }else {
+        shiftPressed = true;
+    }
+
+    let bigLetter = keyboard.querySelectorAll('.show');
+    for (let i = 0; i < bigLetter.length; i++) {     
         let firstChildLetter = bigLetter[i].children[0].classList[2]
         let secondChildLetter = bigLetter[i].children[1].classList[2]
         bigLetter[i].children[0].classList.add(secondChildLetter);
