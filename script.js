@@ -1,21 +1,25 @@
+if(!localStorage.currenLang) localStorage.currenLang = 'en';
 let altPressed = false;
 let capsLockEnabled = false;
 let shiftPressed = false;
+let lang = localStorage.currenLang;
+let secondLang;
 
+lang === 'en' ? secondLang = 'ru' : secondLang = 'en';
 document.body.insertAdjacentHTML("afterbegin",'<div class="wrapper" id="wrapper"><textarea  class="area" id="result" rows="5" cols="30"></textarea><div class="keyboard" id="keyboard"></div>');
      for (let i = 0; i < config.length; i++){
       let divLine = document.createElement('div');
       divLine.classList.add('line');
       for(let j = 0; j < config[i].length; j++){
-        let divKey = document.createElement('div');
-       // divKey.classList.add(`${config[i][j].key}`);
+        let divKey = document.createElement('div');     
         divKey.classList.add('key');   
         divKey.classList.add(`key-${config[i][j]['key']}`);    
         divKey.insertAdjacentHTML('afterbegin',`<div class="${config[i][j].key} show">
-        <span class="en lower active">${config[i][j]['en lower']}</span>
-        <span class="en upper disabled">${config[i][j]['en upper']}</span></div>
-        <div class="${config[i][j].key} disabled"><span class="ru lower active">${config[i][j]['ru lower']}</span>
-        <span class="ru upper disabled">${config[i][j]['ru upper']}</span></div>`);
+        <span class="${lang} lower active">${config[i][j][lang+' lower']}</span>
+        <span class="${lang} upper disabled">${config[i][j][lang+' upper']}</span></div>
+        <div class="${config[i][j].key} disabled">
+        <span class="${secondLang} lower active">${config[i][j][secondLang+' lower']}</span>
+        <span class="${secondLang} upper disabled">${config[i][j][secondLang+' upper']}</span></div>`);
         divLine.append(divKey);
       }   
       keyboard.append(divLine);   
@@ -23,7 +27,8 @@ document.body.insertAdjacentHTML("afterbegin",'<div class="wrapper" id="wrapper"
 wrapper.append(keyboard);
 
 function changeLang(){
-    let currentLang =  keyboard.querySelectorAll('.key');       
+    let currentLang =  keyboard.querySelectorAll('.key'); 
+   
     for (let i = 0; i < currentLang.length; i++){       
             let firstChildLang = currentLang[i].children[0].classList[1];
             let secondChildLanf = currentLang[i].children[1].classList[1];
@@ -31,7 +36,11 @@ function changeLang(){
             currentLang[i].children[0].classList.add(secondChildLanf);
             currentLang[i].children[1].classList.remove(secondChildLanf);
             currentLang[i].children[1].classList.add(firstChildLang);       
-    }
+    }  
+    let localLang = keyboard.querySelector('.show');
+    localLang = localLang.querySelector('span');  
+    localStorage.currenLang =  localLang.classList[0];   
+
 }
 
 function keyLightOn (active) {    
@@ -39,6 +48,7 @@ function keyLightOn (active) {
     active.closest('.key').classList.add('clicked');
     
 }
+
 function keyLightOff (active) {    
     
     active.closest('.key').classList.remove('clicked');
@@ -57,8 +67,7 @@ function capsLetters(active){
     
         
     let bigLetter = keyboard.querySelectorAll('.show');
-    for (let i = 0; i < bigLetter.length; i++) {
-       // let children = bigLetter[i].children.querySelector('.upper');
+    for (let i = 0; i < bigLetter.length; i++) {       
         let firstChildLetter = bigLetter[i].children[0].classList[2]
         let secondChildLetter = bigLetter[i].children[1].classList[2]
         bigLetter[i].children[0].classList.add(secondChildLetter);
@@ -67,6 +76,7 @@ function capsLetters(active){
         bigLetter[i].children[1].classList.remove(secondChildLetter);
     }
 }
+
 function shiftLetters(){
     if(shiftPressed) {
         shiftPressed = false;
@@ -75,8 +85,7 @@ function shiftLetters(){
     }
 
     let bigLetter = keyboard.querySelectorAll('.show');
-    for (let i = 0; i < bigLetter.length; i++) {
-       // let children = bigLetter[i].children.querySelector('.upper');
+    for (let i = 0; i < bigLetter.length; i++) {       
         let firstChildLetter = bigLetter[i].children[0].classList[2]
         let secondChildLetter = bigLetter[i].children[1].classList[2]
         bigLetter[i].children[0].classList.add(secondChildLetter);
@@ -95,33 +104,30 @@ function printLetter(active, code) {
   
     let printActive = active.querySelector('.active').innerText;
     if(controls.indexOf(code) !== -1){
-    switch(code){
-        case 'Tab':
-            result.value += '  ';                    
-            break;
-        case ('Backspace'):
-            result.value = result.value.substr(0, result.value.length - 1);
-            break;
-        case ('Enter'):
-            result.value += '\n';         
+        switch(code){
+            case 'Tab':
+                result.value += '  ';                    
+                break;
+            case ('Backspace'):
+                result.value = result.value.substr(0, result.value.length - 1);
+                break;
+            case ('Enter'):
+                result.value += '\n';         
+        }
+    }else {
+    result.value += printActive;
     }
-}else{
-
-result.value += printActive;
-}
    
 }
 
 function pressedUp (event){
     let eventCode = event.code;
-    let active = keyboard.querySelector(`.${eventCode}.show`); 
-    
+    let active = keyboard.querySelector(`.${eventCode}.show`);    
 
     if(eventCode !== 'CapsLock') {
 
         keyLightOn(active);
-    }
-    
+    }    
    
     if(eventCode === 'AltLeft'){
         altPressed = true;
@@ -137,17 +143,11 @@ function pressedUp (event){
     }
    
      printLetter(active, eventCode);
-   
-    
-
-
 }
 
 function pressedDown(event){
     let eventCode = event.code;
-    let active = keyboard.querySelector(`.${eventCode}`);
-    
-    
+    let active = keyboard.querySelector(`.${eventCode}`);   
    
    if(eventCode !== 'CapsLock'){
     keyLightOff(active);
@@ -163,16 +163,7 @@ function pressedDown(event){
 function mouseClickUp(event) {   
      let target = event.target.closest('div') ;
      keyLightOff(target);
-//console.log(target.closest('div'));
-    // if(target.classList[2] == 'active'){
-    //     //console.log();
-      
-    //    //console
-    // }
-   // console.log('target__'+target.closest('div')+'  class__'+target.classList[0]);
-    printLetter(target, target.classList[0]);
- 
-   
+     printLetter(target, target.classList[0]);   
 }
 
 function mouseClickDown(event) {   
@@ -187,3 +178,7 @@ for(let i = 0; i < keyListener.length; i++){
     keyListener[i].addEventListener('mouseup', mouseClickUp);
     keyListener[i].addEventListener('mousedown', mouseClickDown);
 }
+
+ 
+   
+
