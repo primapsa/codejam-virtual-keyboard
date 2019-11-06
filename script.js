@@ -112,7 +112,9 @@ function printLetter(active, code) {
                 result.value = result.value.substr(0, result.value.length - 1);
                 break;
             case ('Enter'):
-                result.value += '\n';         
+                result.value += '\n';   
+            case ('Space'):
+                result.value += ' ';      
         }
     }else {
     result.value += printActive;
