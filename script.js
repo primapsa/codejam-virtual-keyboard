@@ -78,3 +78,28 @@ function shiftLetters(){
         bigLetter[i].children[1].classList.remove(secondChildLetter);
     }
 }
+
+function printLetter(active, code) {
+  
+    let letterCase = 'lower';
+    if(capsLockEnabled || shiftPressed){
+        letterCase = 'upper';
+    }
+  
+    let printActive = active.querySelector('.active').innerText;
+    if(controls.indexOf(code) !== -1){
+        switch(code){
+            case 'Tab':
+                result.value += '  ';                    
+                break;
+            case ('Backspace'):
+                result.value = result.value.substr(0, result.value.length - 1);
+                break;
+            case ('Enter'):
+                result.value += '\n';         
+        }
+    }else{
+    result.value += printActive;
+    }
+   
+}
