@@ -33,3 +33,9 @@ function keyLightOn (active) {
     active.closest('.key').classList.add('clicked');
     
 }
+
+function keyLightOff (active) {    
+    
+    active.closest('.key').classList.remove('clicked');
+    
+}
