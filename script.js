@@ -103,3 +103,42 @@ function printLetter(active, code) {
     }
    
 }
+
+function pressedUp(event){
+    let eventCode = event.code;
+    let active = keyboard.querySelector(`.${eventCode}.show`);     
+
+    if(eventCode !== 'CapsLock') {
+
+        keyLightOn(active);
+    }   
+    if(eventCode === 'AltLeft'){
+        altPressed = true;
+    }
+    if((eventCode === 'ControlLeft') && altPressed ){
+        changeLang();
+    }
+    if(eventCode === 'CapsLock'){
+        capsLetters(active);
+    }
+    if((eventCode === 'ShiftLeft' || eventCode === 'ShiftRight') && shiftPressed === false){
+        shiftLetters();
+    }   
+     printLetter(active, eventCode);
+}
+
+function pressedDown(event){
+    
+    let eventCode = event.code;
+    let active = keyboard.querySelector(`.${eventCode}`);   
+    if(eventCode !== 'CapsLock'){
+    keyLightOff(active);
+    }
+    if(eventCode === 'AltLeft'){
+        altPressed = false;
+    }
+    if(eventCode === 'ShiftLeft' || eventCode === 'ShiftRight' ){
+        shiftLetters();
+    }
+}
+
